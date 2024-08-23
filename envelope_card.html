@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envelope with Sliding Letter</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .envelope-container {
+            position: relative;
+            width: 400px;
+            height: 250px;
+            perspective: 1000px;
+        }
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .envelope-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg);
+            transition: transform 0.8s;
+        }
+        .envelope.open .envelope-inner {
+            transform: rotateX(180deg);
+        }
+        .envelope .envelope-front,
+        .envelope .envelope-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        .envelope .envelope-front {
+            background: #fefefe;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            transform: rotateX(0deg);
+        }
+        .envelope .envelope-back {
+            background: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            transform: rotateX(180deg);
+        }
+        .letter {
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            width: 90%;
+            height: 60%;
+            background: #fff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            transform: translateY(-100%);
+            transform-origin: top;
+            transition: transform 0.8s;
+            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .envelope.open .letter {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        .letter-buttons {
+            margin-top: 20px;
+        }
+        .letter-buttons button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .letter-buttons .yes-btn {
+            background-color: #28a745;
+            color: white;
+        }
+        .letter-buttons .no-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        .letter-buttons button:hover {
+            opacity: 0.8;
+        }
+        button.toggle-open-btn,
+        button.toggle-close-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button.toggle-open-btn:hover,
+        button.toggle-close-btn:hover {
+            background-color: #0056b3;
+        }
+        #response-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope-container">
+        <div class="envelope" id="envelope">
+            <div class="envelope-inner">
+                <div class="envelope-front">
+                    <div>💌 Click Open to read my letter!</div>
+                </div>
+                <div class="envelope-back">
+                    <div>What do you think?</div>
+                    <button class="yes-btn" onclick="handleResponse('yes')">Yes</button>
+                    <button class="no-btn" onclick="handleResponse('no')">No</button>
+                </div>
+            </div>
+            <div class="letter" id="letter">
+                <div>I really liked you, Jess, would I have a chance?</div>
+                <div class="letter-buttons">
+                    <button class="yes-btn" onclick="handleResponse('yes')">Yes</button>
+                    <button class="no-btn" onclick="handleResponse('no')">No</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button class="toggle-open-btn" onclick="openEnvelope()">Open</button>
+            <button class="toggle-close-btn" onclick="closeEnvelope()">Close</button>
+        </div>
+        <div id="response-message"></div>
+    </div>
+
+    <script>
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            envelope.classList.add('open');
+        }
+
+        function closeEnvelope() {
+            const envelope = document.getElementById('envelope');
+            envelope.classList.remove('open');
+        }
+
+        function handleResponse(response) {
+            const messageDiv = document.getElementById('response-message');
+            if (response === 'yes') {
+                messageDiv.innerHTML = 'Yes? Ano sobrang happy ko lng i cant express here!';
+            } else if (response === 'no') {
+                messageDiv.innerHTML = 'No? Ok madali lang naman umiyak eh 😢';
+            }
+            // Optionally, close the envelope after a response
+            closeEnvelope();
+        }
+    </script>
+</body>
+</html>
